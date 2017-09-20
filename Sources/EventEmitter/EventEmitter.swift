@@ -3,6 +3,21 @@ import Foundation
 
 private let payloadKey : String = "EventEmitterPayloadKey"
 
+
+#if os(Linux)
+
+extension NotificationCenter {
+
+    func addObserver(forName name: NSNotification.Name, object: Any?, queue: OperationQueue?, using block: @escaping (Notification)->()) {
+        addObserver(forName: name, object: object, queue: queue, usingBlock: block)
+    }
+
+}
+
+
+#endif
+
+
 public class Observer<T> {
     
     let observer: Any
@@ -26,7 +41,7 @@ public class Event<T> {
     let name : Notification.Name
 
     public init(name:Notification.Name?=nil) {
-        self.name = name ?? Notification.Name(UUID().uuidString)
+        self.name = name ?? Notification.Name(rawValue:UUID().uuidString)
     }
     
     public func on(_ execute: @escaping (T)->()) -> Observer<T> {
