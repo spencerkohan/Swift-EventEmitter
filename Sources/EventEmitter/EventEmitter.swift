@@ -8,8 +8,8 @@ private let payloadKey : String = "EventEmitterPayloadKey"
 
 extension NotificationCenter {
 
-    func addObserver(forName name: NSNotification.Name, object: Any?, queue: OperationQueue?, using block: @escaping (Notification)->()) {
-        addObserver(forName: name, object: object, queue: queue, usingBlock: block)
+    func addObserver(forName name: NSNotification.Name, object: Any?, queue: OperationQueue?, using block: @escaping (Notification)->()) -> Any {
+        return addObserver(forName: name, object: object, queue: queue, usingBlock: block)
     }
 
 }
