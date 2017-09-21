@@ -2,15 +2,26 @@ import XCTest
 @testable import EventEmitter
 
 class EventEmitterTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(EventEmitter().text, "Hello, World!")
+    
+    func testEvents() {
+
+        let expectation = self.expectation(description: "Event")
+
+        let event = Event<String>()
+
+        _ = event.on { string in 
+            print("Event received: \(string)")
+            expectation.fulfill()
+        }
+
+        event.emit("hola")
+
+        waitForExpectations(timeout: 1) {_ in}
+
     }
 
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testEvents", testEvents),
     ]
 }
