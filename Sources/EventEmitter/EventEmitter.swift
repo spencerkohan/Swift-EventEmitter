@@ -20,18 +20,15 @@ public class Observer<T> : Hashable {
         self.action = action
     }
     
-    
     public func unregister() {
         event?.unregister(self)
     }
-    
     
 }
 
 public class Event<T> {
     
     let name : Notification.Name
-    
     var observers : Set<Observer<T>> = Set()
 
     public init(name:Notification.Name?=nil) {
@@ -39,14 +36,12 @@ public class Event<T> {
     }
     
     public func on(_ execute: @escaping (T)->()) -> Observer<T> {
-        print("Registering event...")
         let observer = Observer(event: self, action: execute)
         observers.insert(observer)
         return observer
     }
     
     public func emit(_ data:T) {
-        print("Emitting event: \(self.name)")
         for observer in observers {
             observer.action(data)
         }
