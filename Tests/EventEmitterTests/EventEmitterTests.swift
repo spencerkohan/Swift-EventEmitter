@@ -52,7 +52,7 @@ class EventEmitterTests: XCTestCase {
         let event = Event<Void>()
         
         var eventCount = 0
-        event.once {
+        let _ = event.once {
             eventCount += 1
         }
         
