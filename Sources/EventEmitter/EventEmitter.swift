@@ -28,12 +28,7 @@ public class Observer<T> : Hashable {
 
 public class Event<T> {
     
-    let name : Notification.Name
     var observers : Set<Observer<T>> = Set()
-
-    public init(name:Notification.Name?=nil) {
-        self.name = name ?? Notification.Name(rawValue:UUID().uuidString)
-    }
     
     public func on(_ execute: @escaping (T)->()) -> Observer<T> {
         let observer = Observer(event: self, action: execute)
@@ -51,7 +46,6 @@ public class Event<T> {
         return observer
     }
 
-    
     public func emit(_ data:T) {
         for observer in observers {
             observer.action(data)
