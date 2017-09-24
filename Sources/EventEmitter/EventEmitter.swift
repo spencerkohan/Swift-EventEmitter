@@ -8,7 +8,7 @@ public class Observer<T> : Hashable {
     }
     
     public static func ==(lhs: Observer<T>, rhs:Observer<T>) -> Bool {
-        return ObjectIdentifier(self) == ObjectIdentifier(rhs)
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
     
     weak var event: Event<T>?
@@ -41,6 +41,17 @@ public class Event<T> {
         return observer
     }
     
+    public func once(_ execute: @escaping (T)->()) -> Observer<T> {
+        let observer : Observer<T> = Observer(event: self, action: execute)
+        observer.action = { value in
+            execute(value)
+            observer.unregister()
+        }
+        observers.insert(observer)
+        return observer
+    }
+
+    
     public func emit(_ data:T) {
         for observer in observers {
             observer.action(data)
@@ -51,4 +62,12 @@ public class Event<T> {
         self.observers.remove(observer)
     }
 
+}
+
+public extension Event where T == Void {
+    
+    public func emit() {
+        self.emit(())
+    }
+    
 }
