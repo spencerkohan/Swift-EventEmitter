@@ -29,6 +29,8 @@ public class Observer<T> : Hashable {
 public class Event<T> {
     
     var observers : Set<Observer<T>> = Set()
+
+    public init() {}
     
     public func on(_ execute: @escaping (T)->()) -> Observer<T> {
         let observer = Observer(event: self, action: execute)
