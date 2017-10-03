@@ -1,7 +1,39 @@
 
 import Foundation
 
-public class Observer<T> : Hashable {
+public protocol AnyObserver {
+    func unregister()
+}
+
+public class ObserverGroup {
+    
+    public init(_ observers: [AnyObserver]) {
+        self.observers = observers
+    }
+    
+    var observers : [AnyObserver]
+    
+    public static func +=(_ base: inout ObserverGroup, _ addition: [AnyObserver]) {
+        base.observers += addition
+    }
+    
+    public static func +=(_ base: inout ObserverGroup, _ observer: AnyObserver) {
+        base.observers += [observer]
+    }
+    
+    public func unregisterAll() {
+        for observer in observers {
+            observer.unregister()
+        }
+        self.observers = []
+    }
+    
+    deinit {
+        self.unregisterAll()
+    }
+}
+
+public class Observer<T> : Hashable, AnyObserver {
     
     public var hashValue: Int {
         return ObjectIdentifier(self).hashValue

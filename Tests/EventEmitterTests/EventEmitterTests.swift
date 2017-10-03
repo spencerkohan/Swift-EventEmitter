@@ -62,6 +62,29 @@ class EventEmitterTests: XCTestCase {
         XCTAssert(eventCount == 1, "Exactly one event receieved")
         
     }
+    
+    func testObserverGroup() {
+        
+        let event = Event<Void>()
+    
+        var eventCount = 0
+    
+        let group = ObserverGroup([
+            event.on {
+                eventCount += 1
+            }
+        ])
+    
+        event.emit()
+        
+        group.unregisterAll()
+        event.emit()
+        
+        
+        XCTAssert(eventCount == 1, "Exactly one event receieved")
+        XCTAssert(event.observers.count == 0, "No observers remain")
+        
+    }
 
 
     static var allTests = [
@@ -69,5 +92,6 @@ class EventEmitterTests: XCTestCase {
         ("testVoidEvent", testVoidEvent),
         ("testUnregistration", testUnregistration),
         ("testOneTimeObserver", testOneTimeObserver),
+        ("testObserverGroup", testObserverGroup),
     ]
 }
