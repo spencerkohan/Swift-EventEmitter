@@ -3,6 +3,7 @@ import Foundation
 
 public protocol AnyObserver {
     func unregister()
+    func register()
 }
 
 public class ObserverGroup {
@@ -25,7 +26,12 @@ public class ObserverGroup {
         for observer in observers {
             observer.unregister()
         }
-        self.observers = []
+    }
+    
+    public func registerAll() {
+        for observer in observers {
+            observer.register()
+        }
     }
     
     deinit {
@@ -54,6 +60,10 @@ public class Observer<T> : Hashable, AnyObserver {
     
     public func unregister() {
         event?.unregister(self)
+    }
+    
+    public func register() {
+        event?.observers.insert(self)
     }
     
 }

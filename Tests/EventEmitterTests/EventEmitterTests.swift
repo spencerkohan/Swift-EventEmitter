@@ -84,6 +84,12 @@ class EventEmitterTests: XCTestCase {
         XCTAssert(eventCount == 1, "Exactly one event receieved")
         XCTAssert(event.observers.count == 0, "No observers remain")
         
+        group.registerAll()
+        event.emit()
+        
+        XCTAssert(eventCount == 2, "Exactly two events receieved")
+        XCTAssert(event.observers.count == 1, "No observers remain")
+        
     }
 
 
