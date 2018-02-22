@@ -90,9 +90,16 @@ public class Event<T> {
         return observer
     }
 
-    public func emit(_ data:T) {
+    public func emit(_ data: T) {
         for observer in observers {
             observer.action(data)
+        }
+    }
+    
+    public func  emitConcurrent(_ data: T) {
+        let currentObservers = Array(self.observers)
+        DispatchQueue.concurrentPerform(iterations: currentObservers.count) { i in
+            currentObservers[i].action(data)
         }
     }
     
@@ -106,6 +113,10 @@ public extension Event where T == Void {
     
     public func emit() {
         self.emit(())
+    }
+    
+    public func emitConcurrent() {
+        self.emitConcurrent(())
     }
     
 }

@@ -63,6 +63,33 @@ class EventEmitterTests: XCTestCase {
         
     }
     
+    func testConcurrentEmit() {
+        
+        let event = Event<Void>()
+        
+        var array: [Int] = []
+        
+        _ = event.on {
+            array += [0]
+            // this sleep should ensure the other closure
+            // is executed first
+            sleep(1)
+            array += [2]
+        }
+        _ = event.on {
+            array += [1]
+        }
+        
+        event.emitConcurrent()
+        array += [3]
+        
+        XCTAssert(array[0] == 0)
+        XCTAssert(array[1] == 0)
+        XCTAssert(array[2] == 0)
+        XCTAssert(array[3] == 0)
+        
+    }
+    
     func testObserverGroup() {
         
         let event = Event<Void>()
