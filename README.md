@@ -36,11 +36,21 @@ Unregister an observer:
 	// through the event
 	event.unregister(oneTimeObserver)
 
+## Concurrent Emit
+
+It's also possible to emit an event concurrently, so that observer actions will be executed in parallel: 
+
+    // emit concurrent events synchronously
+    event.emitConcurrent(data)
+    print("this prints after all the observer actions have been executed")
+
+    // emit concurrent events asyncronously
+    DispatchQueue.main.async {
+    	event.emitConcurrent(data)
+    }
+    print("this will print before the emit finishes")
+
 ## Note
 
 Observer blocks are executed synchronously on the thread where `emit` is called
-
-
-
-
 

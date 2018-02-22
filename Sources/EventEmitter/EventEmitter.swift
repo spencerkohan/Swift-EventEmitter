@@ -91,20 +91,21 @@ public class Event<T> {
     }
 
     public func emit(_ data: T) {
-        for observer in observers {
+        let currentObservers = Array(observers)
+        for observer in currentObservers {
             observer.action(data)
         }
     }
     
     public func  emitConcurrent(_ data: T) {
-        let currentObservers = Array(self.observers)
+        let currentObservers = Array(observers)
         DispatchQueue.concurrentPerform(iterations: currentObservers.count) { i in
             currentObservers[i].action(data)
         }
     }
     
     public func unregister(_ observer: Observer<T>) {
-        self.observers.remove(observer)
+        observers.remove(observer)
     }
 
 }
