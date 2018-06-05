@@ -36,21 +36,35 @@ Unregister an observer:
 	// through the event
 	event.unregister(oneTimeObserver)
 
-## Concurrent Emit
+Re-register an observer:
 
-It's also possible to emit an event concurrently, so that observer actions will be executed in parallel: 
+	observer.register()
 
-    // emit concurrent events synchronously
-    event.emitConcurrent(data)
-    print("this prints after all the observer actions have been executed")
+### Observer Groups:
 
-    // emit concurrent events asyncronously
-    DispatchQueue.main.async {
-    	event.emitConcurrent(data)
-    }
-    print("this will print before the emit finishes")
+Observer groups allow for the block registration/unregistration of multiple observers at once.
+
+	// initialize a group of observers
+    let group = ObserverGroup([
+    		eventA.on { ... },
+    		eventB.on { ... },
+    		...
+    	])
+
+	// unregister all observers in a group
+	group.unregisterAll()
+
+	// re-register a group of observers
+	group.registerAll()
+
+Observer groups unregister all their memebers on `deinit`.
+
 
 ## Note
 
 Observer blocks are executed synchronously on the thread where `emit` is called
+
+
+
+
 

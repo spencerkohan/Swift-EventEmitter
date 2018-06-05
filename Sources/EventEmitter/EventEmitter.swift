@@ -82,7 +82,7 @@ public class Event<T> {
     
     public func once(_ execute: @escaping (T)->()) -> Observer<T> {
         let observer : Observer<T> = Observer(event: self, action: execute)
-        observer.action = { value in
+        observer.action = {[unowned observer] value in
             execute(value)
             observer.unregister()
         }
