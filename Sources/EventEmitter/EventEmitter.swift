@@ -41,8 +41,8 @@ public class ObserverGroup {
 
 public class Observer<T> : Hashable, AnyObserver {
     
-    public var hashValue: Int {
-        return ObjectIdentifier(self).hashValue
+    public func hash(into hasher: inout Hasher) {
+        return ObjectIdentifier(self).hash(into: &hasher)
     }
     
     public static func ==(lhs: Observer<T>, rhs:Observer<T>) -> Bool {
@@ -112,11 +112,11 @@ public class Event<T> {
 
 public extension Event where T == Void {
     
-    public func emit() {
+    func emit() {
         self.emit(())
     }
     
-    public func emitConcurrent() {
+    func emitConcurrent() {
         self.emitConcurrent(())
     }
     
